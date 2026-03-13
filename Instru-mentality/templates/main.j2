@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CS340 - Instru-Mentality</title>
+    <link href='static/style.css' rel='stylesheet' />
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/customers">Customers</a>
+        <a href="/employees">Employees</a>
+        <a href="/orders">Orders</a>
+        <a href="/products">Products</a>
+        <a href="/orderdetails">Order Details</a>
+    </nav>
+      <!-- RESET button -->
+  <div>
+    <form action="/home/reset" method="POST">
+      <button type="submit">RESET DATA</button>
+    </form>
+  </div>
+  
+    {% block content %}{% endblock %}
+
+</body>
+</html>

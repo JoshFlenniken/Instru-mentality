@@ -1,0 +1,118 @@
+
+{% extends "main.j2" %}
+{% block content %}
+
+<h1>Products</h1>
+
+{# READ table #}
+<table>
+    <thead>
+        {# For the table header row, print the DB attribute names #}
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Product Category</th>
+            <th>Product Price</th>
+            <th>Product Stock</th>
+            <th>Is Active</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {# For each row, print the productID, productName, productCategory, productPrice, productStock, and isActive #}
+        {% for product in products %}
+        <tr>
+            <td>{{ product.productID }}</td>
+            <td>{{ product.productName }}</td>
+            <td>{{ product.productCategory }}</td>
+            <td>{{ product.productPrice }}</td>
+            <td>{{ product.productStock }}</td>
+            <td>{{ product.isActive }}</td>
+
+            {# DELETE form #}
+            <form id="delete_product_form" method="POST" action="/products/delete">
+                <input type="hidden" name="delete_product_id"   value="{{ product.productID }}">
+                <input type="hidden" name="delete_product_name" value="{{ product.productName }}">
+                <td>
+                    <button type="submit">
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{# CREATE form #}
+<h2>Create a Product</h2>
+<form class="cuForm" id="create_product_form" method="POST" action="/products/create">
+    <label for="create_product_productName">Product: </label>
+    <input type="text" name="create_product_productName" id="create_product_productName" required>
+
+    <label for="create_product_productCategory">Category: </label>
+    <select name="create_product_productCategory" id="create_product_productCategory" required>
+        <option value="" disabled selected>Select a Category</option>
+        <option value="Guitar">Guitar</option>
+        <option value="Orchestral">Orchestral</option>
+        <option value="Classical">Classical</option>
+        <option value="Wind">Wind</option>
+        <option value="Electric">Electric</option>
+        <option value="Occult">Occult</option>
+    </select>
+
+    <label for="create_product_productPrice">Price: </label>
+    <input type="number" name="create_product_productPrice" id="create_product_productPrice" min="0">
+
+    <label for="create_product_productStock">Stock: </label>
+    <input type="number" name="create_product_productStock" id="create_product_productStock" min="0">
+
+    <label for="create_product_isActive">Active: </label>
+    <input type="number" name="create_product_isActive" id="create_product_isActive" min="0" max="1">
+
+    <input type="submit">
+</form>
+
+{# UPDATE form #}
+<h2>Update a Product</h2>
+<form class="cuForm" id='update_product_form' method='POST' action='/products/update'>
+    <label for="update_product_productID">Product to Update: </label>
+    <select name="update_product_id" id="update_product_id" required>
+        <option value="" disabled selected>Select a Product</option>
+        {% for product in products %}
+        <option value="{{product['productID']}}" required>
+            {{product['productID']}} 
+            - 
+            {{product['productName']}}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="update_product_productName">Product Name: </label>
+    <input type="text" name="update_product_productName" id="update_product_productName">
+
+    <label for="update_product_productCategory">Category: </label>
+    <select name="update_product_productCategory" id="update_product_productCategory" required>
+        <option value="" disabled selected>Select a Category</option>
+        <option value="Guitar">Guitar</option>
+        <option value="Orchestral">Orchestral</option>
+        <option value="Classical">Classical</option>
+        <option value="Wind">Wind</option>
+        <option value="Electric">Electric</option>
+        <option value="Occult">Occult</option>
+    </select>
+
+    <label for="update_product_productPrice">Price: </label>
+    <input type="number" step="0.01" name="update_product_productPrice" id="update_product_productPrice">
+
+    <label for="update_product_productStock">Stock: </label>
+    <input type="number" name="update_product_productStock" id="update_product_productStock">
+
+    <label for="update_product_isActive">Active: </label>
+    <input type="number" name="update_product_isActive" id="update_product_isActive" min="0" max="1">
+
+    <input type="submit">
+</form>
+
+{% endblock %}

@@ -1,0 +1,111 @@
+
+{% extends "main.j2" %}
+{% block content %}
+
+<h1>Orders</h1>
+
+{# READ table #}
+<table>
+    <thead>
+        {# For the table header row, print the DB attribute names #}
+        <tr>
+            <th>Order ID</th>
+            <th>Customer ID</th>
+            <th>Employee ID</th>
+            <th>Order Date</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {# For each row, print the orderID, customerID, employeeID, and orderDate #}
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.orderID }}</td>
+            <td>{{ order.customerID }}</td>
+            <td>{{ order.employeeID }}</td>
+            <td>{{ order.orderDate }}</td>
+
+            {# DELETE form #}
+            <form id="delete_order_form" method="POST" action="/orders/delete">
+                <input type="hidden" name="delete_order_id" value="{{ order.orderID }}">
+                <td>
+                    <button type="submit">
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{# CREATE form #}
+<h2>Create an Order</h2>
+<form class="cuForm" id="create_order_form" method="POST" action="/orders/create">
+    <label for="create_order_customerID">Customer: </label>
+    <select name="create_order_customerID" id="create_order_customerID" required>
+        <option value="" disabled selected>Select a Customer</option>
+    {% for customer in customers %}
+    <option value="{{customer['customerID']}}" required>
+            {{customer['customerID']}}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="create_order_employeeID">Employee: </label>
+    <select name="create_order_employeeID" id="create_order_employeeID" required>
+        <option value="" disabled selected>Select an Employee</option>
+        {% for employee in employees %}
+        <option value="{{employee['employeeID']}}" required>
+            {{employee['employeeID']}}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="create_order_orderDate">Order Date: </label>
+    <input type="date" name="create_order_orderDate" id="create_order_orderDate">
+
+    <input type="submit">
+</form>
+
+{# UPDATE form #}
+<h2>Update an Order</h2>
+<form class="cuForm" id='update_order_form' method='POST' action='/orders/update'>
+    <label for="update_order_orderID">Order to Update: </label>
+    <select name="update_order_id" id="update_order_id" required>
+        <option value="" disabled selected>Select an Order</option>
+        {% for order in orders %}
+        <option value="{{order['orderID']}}" required>
+            {{order['orderID']}}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="update_order_customerID">Customer: </label>
+    <select name="update_order_customerID" id="update_order_customerID" required>
+        <option value="" disabled selected>Select a Customer</option>
+        {% for customer in customers %}
+        <option value="{{customer['customerID']}}" required>
+            {{customer['customerID']}}
+        </option>
+        {% endfor %}
+    </select>
+
+        <label for="update_order_employeeID">Employee: </label>
+    <select name="update_order_employeeID" id="update_order_employeeID" required>
+        <option value="" disabled selected>Select an Employee</option>
+        {% for employee in employees %}
+        <option value="{{employee['employeeID']}}" required>
+            {{employee['employeeID']}}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label for="update_order_orderDate">Order Date: </label>
+    <input type="date" name="update_order_orderDate" id="update_order_orderDate">
+
+    <input type="submit">
+</form>
+
+{% endblock %}

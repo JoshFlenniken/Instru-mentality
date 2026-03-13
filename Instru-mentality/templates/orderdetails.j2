@@ -1,0 +1,131 @@
+
+{% extends "main.j2" %}
+{% block content %}
+
+<h1>Order Details</h1>
+
+{# READ table #}
+<table>
+  <thead>
+    {# For the table header row, print the DB attribute names #}
+    <tr>
+      <th>Detail ID</th>
+      <th>Order – Customer</th>
+      <th>Product – Name</th>
+      <th>Quantity</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for orderdetail in orderdetails %}
+    <tr>
+      <td>{{ orderdetail.orderDetailsID }}</td>
+      <td>
+        {{ orderdetail.orderID }} – 
+        {% for order in orders %}
+          {% if order.orderID == orderdetail.orderID %}
+            {{ order.firstName }} {{ order.lastName }}
+          {% endif %}
+        {% endfor %}
+      </td>
+      <td>
+        {{ orderdetail.productID }} – 
+        {% for product in products %}
+          {% if product.productID == orderdetail.productID %}
+            {{ product.productName }}
+          {% endif %}
+        {% endfor %}
+      </td>
+      <td>{{ orderdetail.orderQuantity }}</td>
+
+      {# DELETE form #}
+      <form method="POST"
+            action="/orderdetails/delete"
+            style="display:inline;">
+        <input type="hidden" name="delete_orderdetails_id" value="{{ orderdetail.orderDetailsID }}">
+        <td>
+        <button type="submit">
+            Delete
+        </button></td>
+      </form>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{# CREATE form #}
+<h2>Create an Order Detail</h2>
+<form class="cuForm" method="POST" action="/orderdetails/create">
+
+  <label for="create_orderdetails_orderID">Order:</label>
+  <select name="create_orderdetails_orderID" id="create_orderdetails_orderID" required>
+    <option value="" disabled selected>Select an order</option>
+    {% for order in orders %}
+    <option value="{{ order.orderID }}">
+      {{ order.orderID }} – {{ order.firstName }} {{ order.lastName }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <label for="create_orderdetails_productID">Product:</label>
+  <select name="create_orderdetails_productID" id="create_orderdetails_productID" required>
+    <option value="" disabled selected>Select a product</option>
+    {% for product in products %}
+    <option value="{{ product.productID }}">
+      {{ product.productID }} – {{ product.productName }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <label for="create_orderdetails_orderQuantity">Quantity:</label>
+  <input type="number" name="create_orderdetails_orderQuantity" id="create_orderdetails_orderQuantity" min="0" required>
+
+  <button type="submit">
+    Create
+  </button>
+</form>
+
+{# UPDATE form #}
+<h2>Update an Order Detail</h2>
+<form class="cuForm" method="POST" action="/orderdetails/update">
+
+  <label for="update_orderdetails_id">Detail to Update:</label>
+  <select name="update_orderdetails_id" id="update_orderdetails_id" required>
+    <option value="" disabled selected>Select detail</option>
+    {% for orderdetail in orderdetails %}
+    <option value="{{ orderdetail.orderDetailsID }}">
+      {{ orderdetail.orderDetailsID }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <label for="update_orderdetails_orderID">Order:</label>
+  <select name="update_orderdetails_orderID" id="update_orderdetails_orderID" required>
+    <option value="" disabled selected>Select an order</option>
+    {% for order in orders %}
+    <option value="{{ order.orderID }}">
+      {{ order.orderID }} – {{ order.firstName }} {{ order.lastName }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <label for="update_orderdetails_productID">Product:</label>
+  <select name="update_orderdetails_productID" id="update_orderdetails_productID" required>
+    <option value="" disabled selected>Select a product</option>
+    {% for product in products %}
+    <option value="{{ product.productID }}">
+      {{ product.productID }} – {{ product.productName }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <label for="update_orderdetails_orderQuantity">Quantity:</label>
+  <input type="number" name="update_orderdetails_orderQuantity" id="update_orderdetails_orderQuantity" min="0" required>
+
+  <button type="submit">
+    Update
+  </button>
+</form>
+
+{% endblock %}
